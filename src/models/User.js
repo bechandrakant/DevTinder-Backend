@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+const privateKey = "DevTinder@20";
 
 const userSchema = new mongoose.Schema(
   {
@@ -33,6 +37,20 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.getJWT = function () {
+  const user = this;
+  const token = jwt.sign({ id: user._id }, privateKey);
+  return token;
+};
+
+userSchema.methods.validatePassword = async function (inputPassword) {
+  const user = this;
+  const passwordHash = user.password;
+  const isValidPassword = await bcrypt.compare(inputPassword, passwordHash);
+  if (!isValidPassword) throw new Error("Invalid credentials");
+  return isValidPassword;
+};
 
 const User = mongoose.model("User", userSchema);
 
