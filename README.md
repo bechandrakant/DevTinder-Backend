@@ -6,25 +6,25 @@ Similar to Tinder but for developers
 
 - authRouter
 
-  - POST /signup
-  - POST /login
-  - POST /logout
+  - [x] POST /signup
+  - [x] POST /login
+  - [x] POST /logout
 
 - profileRouter
 
-  - GET /profile/view
-  - PATCH /profile/edit
-  - PATCH /profile/password
+  - [x] GET /profile/view
+  - [x] PATCH /profile/edit
+  - [x] PATCH /profile/password
 
 - connectionRequestRouter (Status: ignore, interested, accepeted, rejected)
 
-  - POST /request/send/intereted/:userId
-  - POST /request/send/ignored/:userld
-  - POST /request/review/accepted/:requestId
-  - POST /request/review/rejected/:requestId
+  - [ ] POST /request/send/intereted/:userId
+  - [ ] POST /request/send/ignored/:userld
+  - [ ] POST /request/review/accepted/:requestId
+  - [ ] POST /request/review/rejected/:requestId
 
 - userRouter
 
-  - GET /user/connections
-  - GET /user/requests
-  - GET /user/feed - Gets you the profiles of other users on platform
+  - [ ] GET /user/connections
+  - [ ] GET /user/requests
+  - [ ] GET /user/feed - Gets you the profiles of other users on platform
