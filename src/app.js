@@ -5,60 +5,18 @@ const jwt = require("jsonwebtoken");
 const connectDB = require("./config/db");
 const User = require("./models/User");
 const userAuth = require("./middlewares/auth");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 
-const privateKey = "DevTinder@20";
-
-app.post("/signup", async (req, res) => {
-  try {
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const user = new User({
-      ...req.body,
-      password: hash,
-    });
-    const response = await user.save();
-    res.send(response);
-  } catch (err) {
-    res.status(400).send("Error: " + err.message);
-  }
-});
-
-app.post("/login", async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      throw new Error("Invalid credentials");
-    } else {
-      await user.validatePassword(req.body.password);
-      const token = user.getJWT();
-
-      res.cookie("token", token);
-      res.send("Login successful");
-    }
-  } catch (err) {
-    res.status(400).send("Error: " + err.message);
-  }
-});
-
-app.post("/sendConnectionRequest", userAuth, (req, res) => {
-  try {
-    res.send(req.user.name + " sent connection request");
-  } catch (err) {
-    res.status(400).send("Error: " + err.message);
-  }
-});
-
-app.get("/profile", userAuth, (req, res) => {
-  try {
-    res.send(req.user);
-  } catch (err) {
-    res.status(400).send("Error: " + err.message);
-  }
-});
+app.use("/", authRouter);
+app.use("/profile", profileRouter);
+app.use("/", requestRouter);
 
 app.get("/feed", async (req, res) => {
   let users = await User.find({});
