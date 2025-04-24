@@ -22,10 +22,9 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       lowercase: true,
-      validate(value) {
-        if (!["male", "female"].includes(value)) {
-          throw new Error("Invalid gender");
-        }
+      enum: {
+        values: ["male", "female"],
+        message: `{VALUE} is not a valid gender`,
       },
     },
     age: { type: Number, min: 18 },

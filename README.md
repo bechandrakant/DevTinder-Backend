@@ -18,10 +18,8 @@ Similar to Tinder but for developers
 
 - connectionRequestRouter (Status: ignore, interested, accepeted, rejected)
 
-  - [ ] POST /request/send/intereted/:userId
-  - [ ] POST /request/send/ignored/:userld
-  - [ ] POST /request/review/accepted/:requestId
-  - [ ] POST /request/review/rejected/:requestId
+  - [x] POST /request/send/:status/:userId (status: ignored, interested)
+  - [ ] POST /request/review/:status/:requestId (status: accepeted, rejected)
 
 - userRouter
 
