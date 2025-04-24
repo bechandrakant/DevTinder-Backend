@@ -23,6 +23,6 @@ Similar to Tinder but for developers
 
 - userRouter
 
-  - [ ] GET /user/connections
-  - [ ] GET /user/requests
-  - [ ] GET /user/feed - Gets you the profiles of other users on platform
+  - [x] GET /user/connections
+  - [x] GET /user/requests
+  - [x] GET /user/feed - Gets you the profiles of other users on platform
