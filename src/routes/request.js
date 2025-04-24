@@ -51,39 +51,32 @@ requestRouter.post("/send/:status/:userId", userAuth, async (req, res) => {
   }
 });
 
-requestRouter.post(
-  "/review/accepted/:requestId",
+requestRouter.patch(
+  "/review/:status/:requestId",
   userAuth,
   async (req, res) => {
     try {
-      const { requestId } = req.params;
-      const request = await ConnectionRequest.findById(requestId);
-
-      request.status = "accepted";
-
-      await request.save();
-      res.send("connection request accepted");
-    } catch (err) {
-      res.status(400).send("Error: " + err.message);
-    }
-  }
-);
-
-requestRouter.post(
-  "/review/rejected/:requestId",
-  userAuth,
-  async (req, res) => {
-    try {
-      const { requestId } = req.params;
+      const { status, requestId } = req.params;
       const loggedInUser = req.user;
-      const request = await ConnectionRequest.find({
-        to: loggedInUser._id,
+
+      if (!(status == "accepted" || status == "rejected")) {
+        throw new Error("Invalid status");
+      }
+
+      const connectionRequest = await ConnectionRequest.findOne({
+        _id: requestId,
+        to: loggedInUser.id,
+        status: "interested",
       });
 
-      request.status = "accepted";
+      if (!connectionRequest) {
+        throw new Error("No such requests");
+      }
 
-      await request.save();
-      res.send("connection request accepted");
+      connectionRequest.status = status;
+
+      const data = await ConnectionRequest.save();
+      res.status(200).json({ message: `Connection request ${status}`, data });
     } catch (err) {
       res.status(400).send("Error: " + err.message);
     }
